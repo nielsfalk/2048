@@ -1,5 +1,7 @@
-import Direction.Down
-import Direction.Right
+package de.nielsfalk.g2048
+
+import de.nielsfalk.g2048.Direction.Down
+import de.nielsfalk.g2048.Direction.Right
 
 typealias Fields = Map<Position, Int>
 
@@ -79,7 +81,10 @@ fun String.asGrid(): Grid {
                     .map { (col, value) ->
                         value.toIntOrNull()
                             ?.let {
-                                Position(Row(row), Col(col)) to it
+                                Position(
+                                    Row(row),
+                                    Col(col)
+                                ) to it
                             }
                     }.filterNotNull()
             }.toMap(),

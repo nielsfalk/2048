@@ -1,3 +1,5 @@
+package de.nielsfalk.g2048
+
 enum class Direction {
     Left, Up, Right, Down;
 

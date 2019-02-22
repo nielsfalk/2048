@@ -1,4 +1,6 @@
-import Direction.*
+package de.nielsfalk.g2048
+
+import de.nielsfalk.g2048.Direction.*
 
 inline class Position(val value: Pair<Row, Col>) {
     val row: Row get() = value.first

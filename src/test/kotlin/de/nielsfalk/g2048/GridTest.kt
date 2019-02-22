@@ -1,12 +1,20 @@
-import Direction.*
+package de.nielsfalk.g2048
+
+import de.nielsfalk.g2048.Direction.*
 import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
 
 class GridTest {
     @Test
     fun print() {
-        Grid(mapOf(Position(Row(1), Col(2)) to 3)).toString() shouldEqual
+        Grid(
+            mapOf(
+                Position(
+                    Row(1),
+                    Col(2)
+                ) to 3
+            )
+        ).toString() shouldEqual
                 " , , , \n" +
                 " , ,3, \n" +
                 " , , , \n" +
@@ -20,7 +28,15 @@ class GridTest {
                 " , ,3, \n" +
                 " , , , \n" +
                 " , , , "
-                ).asGrid() shouldEqual Grid(mapOf(Position(Row(1), Col(2)) to 3))
+                ).asGrid() shouldEqual Grid(
+            mapOf(
+                Position(
+                    Row(
+                        1
+                    ), Col(2)
+                ) to 3
+            )
+        )
     }
 
     @Test

@@ -1,4 +1,6 @@
-import Direction.*
+package de.nielsfalk.g2048
+
+import de.nielsfalk.g2048.Direction.*
 import org.amshove.kluent.shouldEqual
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
