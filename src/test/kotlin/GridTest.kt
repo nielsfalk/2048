@@ -37,5 +37,20 @@ class GridTest {
                 " ,5,6,7\n" +
                 "8, ,8, "
     }
+
+    @Test
+    fun `trim left`() {
+        ("" +
+                "2, ,3, \n" +
+                " ,4, , \n" +
+                " ,5,6,7\n" +
+                "8, ,8, "
+                ).asGrid()
+            .trim(Left).toString() shouldEqual
+                "2,3, , \n" +
+                "4, , , \n" +
+                "5,6,7, \n" +
+                "8,8, , "
+    }
 }
 

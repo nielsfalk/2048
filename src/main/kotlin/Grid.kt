@@ -15,23 +15,46 @@ data class Grid(
             }.joinToString(separator = ",")
         }.joinToString(separator = "\n")
 
-    fun merge(left: Direction): Grid {
-        val toMutableMap = fields.toMutableMap().apply {
-            for (row in rows){
-                for(col in cols){
-                    val currentPosition = Position(row, col)
-                    val currentVal = get(currentPosition)
-                    val positionToMerge = Position(row,col+1)
-                    if (currentVal != null){
-                        remove(positionToMerge, currentVal)
-                        put(currentPosition, currentVal+1)
+    fun merge(left: Direction) = copy(
+        fields.toMutableMap()
+            .apply {
+                for (row in rows) {
+                    for (col in cols) {
+                        val currentPosition = Position(row, col)
+                        val currentVal = get(currentPosition)
+                        val positionToMerge = Position(row, col + 1)
+                        if (currentVal != null) {
+                            remove(positionToMerge, currentVal)
+                            put(currentPosition, currentVal + 1)
+                        }
                     }
                 }
             }
-        }
+            .toMap()
+    )
 
-        return copy(toMutableMap.toMap())
-    }
+    fun trim(left: Direction) = copy(
+        fields.toMutableMap()
+            .apply {
+                for (row in rows) {
+                    for (col in cols) {
+                        val currentPosition = Position(row, col)
+                        if (get(currentPosition) == null) {
+                            for (nextColInt in col.value until colCount) {
+                                val nextPosition = Position(currentPosition.row, Col(nextColInt))
+                                val nextValue = get(nextPosition)
+                                if (nextValue!=null){
+                                    put(currentPosition, nextValue)
+                                    remove(nextPosition)
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .toMap()
+    )
 }
 
 fun String.asGrid(): Grid {
