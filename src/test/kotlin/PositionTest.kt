@@ -8,4 +8,14 @@ class PositionTest {
         position.col shouldEqual Col(2)
         position.row shouldEqual Row(3)
     }
+
+    @Test
+    internal fun `minus on row`() {
+        Row(2)-1 shouldEqual Row(1)
+    }
+
+    @Test
+    internal fun `plus on row`() {
+        Row(2)+1 shouldEqual Row(3)
+    }
 }
