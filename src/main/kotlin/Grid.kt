@@ -1,3 +1,6 @@
+import Direction.Down
+import Direction.Right
+
 typealias Fields = Map<Position, Int>
 
 data class Grid(
@@ -7,6 +10,16 @@ data class Grid(
 ) {
     val rows = (0 until rowCount).map(::Row)
     val cols = (0 until colCount).map(::Col)
+
+    private fun onAllPositions(from: Direction, function: (Position) -> Unit) {
+        (if (from == Down) rows.reversed() else rows)
+            .forEach { row ->
+                (if (from == Right) cols.reversed() else cols)
+                    .forEach { col ->
+                        function(Position(row, col))
+                    }
+            }
+    }
 
     override fun toString(): String =
         rows.joinToString(separator = "\n") { row ->
@@ -18,16 +31,13 @@ data class Grid(
     fun merge(direction: Direction) = copy(
         fields.toMutableMap()
             .apply {
-                for (row in rows) {
-                    for (col in cols) {
-                        val currentPosition = Position(row, col)
-                        val currentVal = get(currentPosition)
-                        val positionToMerge = currentPosition.neighbour(direction.opposite)
-                        val potentialSameValue = get(positionToMerge)
+                onAllPositions(from = direction){ currentPosition->
+                    val currentVal = get(currentPosition)
+                    val positionToMerge = currentPosition.neighbour(direction.opposite)
+                    val potentialSameValue = get(positionToMerge)
                         if (currentVal != null && currentVal == potentialSameValue) {
-                            remove(positionToMerge, currentVal)
-                            put(currentPosition, currentVal + 1)
-                        }
+                        remove(positionToMerge, currentVal)
+                        put(currentPosition, currentVal + 1)
                     }
                 }
             }
@@ -37,19 +47,17 @@ data class Grid(
     fun trim(direction: Direction) = copy(
         fields.toMutableMap()
             .apply {
-                for (row in rows) {
-                    for (col in cols) {
-                        val currentPosition = Position(row, col)
-                        if (get(currentPosition) == null) {
-                            for (nextColInt in col.value until colCount) {
-                                val nextPosition = Position(currentPosition.row, Col(nextColInt))
-                                val nextValue = get(nextPosition)
-                                if (nextValue!=null){
-                                    put(currentPosition, nextValue)
-                                    remove(nextPosition)
-                                    break
-                                }
+                onAllPositions(from = direction){ currentPosition->
+                    if (get(currentPosition) == null) {
+                        var nextPosition = currentPosition.neighbour(direction.opposite)
+                        while (nextPosition.isInDimension(rowCount, colCount)){
+                            val nextValue = get(nextPosition)
+                            if (nextValue != null) {
+                                put(currentPosition, nextValue)
+                                remove(nextPosition)
+                                break
                             }
+                            nextPosition = nextPosition.neighbour(direction.opposite)
                         }
                     }
                 }
