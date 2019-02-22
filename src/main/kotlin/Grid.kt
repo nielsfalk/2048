@@ -23,7 +23,8 @@ data class Grid(
                         val currentPosition = Position(row, col)
                         val currentVal = get(currentPosition)
                         val positionToMerge = currentPosition.neighbour(direction.opposite)
-                        if (currentVal != null) {
+                        val potentialSameValue = get(positionToMerge)
+                        if (currentVal != null && currentVal == potentialSameValue) {
                             remove(positionToMerge, currentVal)
                             put(currentPosition, currentVal + 1)
                         }

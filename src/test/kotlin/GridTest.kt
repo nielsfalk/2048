@@ -34,7 +34,7 @@ class GridTest {
             .merge(Left).toString() shouldEqual
                 "2, ,3, \n" +
                 " ,4, , \n" +
-                " ,5,6,7\n" +
+                " ,4,5,6\n" +
                 "8, ,8, "
     }
 
@@ -64,7 +64,7 @@ class GridTest {
             .command(Left).toString() shouldEqual
                 "2,3, , \n" +
                 "4, , , \n" +
-                "5,6,7, \n" +
+                "4,5,6, \n" +
                 "8,8, , "
     }
 
