@@ -79,6 +79,3 @@ fun String.asGrid(): Grid {
     )
 }
 
-enum class Direction {
-    Left, Right, Up, Down
-}
