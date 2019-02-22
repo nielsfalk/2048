@@ -10,6 +10,8 @@ data class Grid(
     val rowCount: Int = 4,
     val colCount: Int = 4
 ) {
+    constructor() : this(Grid(emptyMap()).newItem().newItem().fields)
+
     val rows = (0 until rowCount).map(::Row)
     val cols = (0 until colCount).map(::Col)
 
@@ -67,7 +69,7 @@ data class Grid(
             .toMap()
     )
 
-    fun command(left: Direction) = trim(left).merge(left).trim(left).newItem()
+    fun command(direction: Direction) = trim(direction).merge(direction).trim(direction).newItem()
     fun emptyPositions(): List<Position> =
         rows.flatMap { row ->
             cols.map { col -> Position(row, col) }
