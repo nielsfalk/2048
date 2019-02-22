@@ -2,9 +2,15 @@ package de.nielsfalk.g2048
 
 import de.nielsfalk.g2048.Direction.*
 import org.amshove.kluent.shouldEqual
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class GridTest {
+    @BeforeEach
+    internal fun setUp() {
+        nextRandomInt = {1}
+    }
+
     @Test
     fun print() {
         Grid(
@@ -78,7 +84,7 @@ class GridTest {
                 "7,7,7,7"
                 ).asGrid()
             .command(Left).toString() shouldEqual
-                "2,3, , \n" +
+                "2,3, ,2\n" +
                 "4, , , \n" +
                 "4,5,6, \n" +
                 "8,8, , "
@@ -93,7 +99,7 @@ class GridTest {
                 "7,7,7,7"
                 ).asGrid()
             .command(Right).toString() shouldEqual
-                " , ,2,3\n" +
+                " ,2,2,3\n" +
                 " , , ,4\n" +
                 " ,4,5,6\n" +
                 " , ,8,8"
@@ -108,7 +114,7 @@ class GridTest {
                 "2, ,6,7"
                 ).asGrid()
             .command(Down).toString() shouldEqual
-                " , , , \n" +
+                " ,2, , \n" +
                 " , ,4, \n" +
                 "2, ,5,8\n" +
                 "3,4,6,8"
@@ -126,9 +132,39 @@ class GridTest {
             .command(Up).toString() shouldEqual
                 "2,4,4,8\n" +
                 "3, ,5,8\n" +
-                " , ,6, \n" +
+                "2, ,6, \n" +
                 " , , , "
     }
 
+    @Test
+    fun `emptyPositions`() {
+        ("" +
+                "1, , ,7\n" +
+                "1,3,4,7\n" +
+                "2,3,5,7\n" +
+                "2, ,6,7"
+                ).asGrid()
+            .emptyPositions() shouldEqual
+                listOf(
+                    Position(Row(0), Col(1)),
+                    Position(Row(0), Col(2)),
+                    Position(Row(3), Col(1))
+                )
+    }
+
+    @Test
+    fun `newItem`() {
+        ("" +
+                "1, , ,7\n" +
+                "1,3,4,7\n" +
+                "2,3,5,7\n" +
+                "2, ,6,7"
+                ).asGrid()
+            .newItem().toString() shouldEqual
+                "1, ,2,7\n" +
+                "1,3,4,7\n" +
+                "2,3,5,7\n" +
+                "2, ,6,7"
+    }
 }
 
