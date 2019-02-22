@@ -38,4 +38,41 @@ class PositionTest {
                 }
             }
     }
+
+    @TestFactory
+    fun inDimension(): List<DynamicTest> {
+        val rowCount = 4
+        val colCount = 4
+        return listOf(
+            Position(Row(0),Col(0)),
+            Position(Row(3),Col(0)),
+            Position(Row(0),Col(3)),
+            Position(Row(3),Col(3))
+        )
+            .map {
+                dynamicTest("$it is in dimension") {
+                    it.isInDimension(rowCount,colCount) shouldEqual true
+                }
+            }
+    }
+
+    @TestFactory
+    fun notInDimension(): List<DynamicTest> {
+        val rowCount = 4
+        val colCount = 4
+        return listOf(
+            Position(Row(-1),Col(0)),
+            Position(Row(0),Col(-1)),
+            Position(Row(4),Col(0)),
+            Position(Row(0),Col(4)),
+            Position(Row(4),Col(3)),
+            Position(Row(3),Col(4))
+
+        )
+            .map {
+                dynamicTest("$it is not in dimension") {
+                    it.isInDimension(rowCount,colCount) shouldEqual false
+                }
+            }
+    }
 }

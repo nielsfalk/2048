@@ -5,15 +5,15 @@ data class Grid(
     val rowCount: Int = 4,
     val colCount: Int = 4
 ) {
-    val rows = (0..rowCount - 1).map(::Row)
-    val cols = (0..colCount - 1).map(::Col)
+    val rows = (0 until rowCount).map(::Row)
+    val cols = (0 until colCount).map(::Col)
 
     override fun toString(): String =
-        rows.map { row ->
-            cols.map { col ->
+        rows.joinToString(separator = "\n") { row ->
+            cols.joinToString(separator = ",") { col ->
                 fields[Position(row, col)]?.toString() ?: " "
-            }.joinToString(separator = ",")
-        }.joinToString(separator = "\n")
+            }
+        }
 
     fun merge(direction: Direction) = copy(
         fields.toMutableMap()
