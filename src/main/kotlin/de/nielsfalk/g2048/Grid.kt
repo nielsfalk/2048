@@ -75,6 +75,7 @@ data class Grid(
             .trim(direction)
         return if (this == result) this else result.newItem()
     }
+
     fun emptyPositions(): List<Position> =
         rows.flatMap { row ->
             cols.map { col -> Position(row, col) }
@@ -85,17 +86,23 @@ data class Grid(
         return copy(
             fields.toMutableMap().apply {
                 val emptyPositions = emptyPositions()
-                if (!emptyPositions.isEmpty()){
+                if (!emptyPositions.isEmpty()) {
 
                     val randomPosition = emptyPositions[nextRandomInt(emptyPositions.size)]
-                    if(get(randomPosition) !=null){
+                    if (get(randomPosition) != null) {
                         println()
                     }
-                    put(randomPosition, nextRandomInt(2)+1)
+                    put(randomPosition, nextRandomInt(2) + 1)
                 }
             }.toMap()
         )
     }
+
+    fun gameOver(): Boolean =
+        emptyPositions().isEmpty() &&
+                Direction.values()
+                    .map { command(it) }
+                    .none { it != this }
 }
 
 fun String.asGrid(): Grid {
@@ -121,4 +128,4 @@ fun String.asGrid(): Grid {
     )
 }
 
-var nextRandomInt: (Int) -> Int = { Random.nextInt(it)}
+var nextRandomInt: (Int) -> Int = { Random.nextInt(it) }

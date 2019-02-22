@@ -10,8 +10,9 @@ fun main() {
     println("s⮐ = down")
     println("d⮐ = right")
     println("w⮐ = up")
-    while (!grid.emptyPositions().isEmpty()) {
-        println(grid)
+
+    println(grid)
+    while (!grid.gameOver()) {
         grid = when (readLine()) {
             "a" -> grid.command(Left)
             "s" -> grid.command(Down)
@@ -19,6 +20,7 @@ fun main() {
             "w" -> grid.command(Up)
             else -> grid
         }
+        println(grid)
     }
 }
 

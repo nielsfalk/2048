@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test
 class GridTest {
     @BeforeEach
     internal fun setUp() {
-        nextRandomInt = {1}
+        nextRandomInt = { 1 }
     }
 
     @Test
@@ -182,5 +182,23 @@ class GridTest {
                 "2, , , "
     }
 
+    @Test
+    fun gameOver() {
+        ("" +
+                "1,2,3,4\n" +
+                "2,4,1,2\n" +
+                "1,5,4,3\n" +
+                "3,4,5,2").asGrid().gameOver() shouldEqual true
+    }
+
+    @Test
+    fun `not gameOver`() {
+        nextRandomInt = { 0 }
+        ("" +
+                "1,2,3,4\n" +
+                "2,4,4,2\n" +
+                "1,5,4,3\n" +
+                "3,4,5,2").asGrid().gameOver() shouldEqual false
+    }
 }
 
