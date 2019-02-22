@@ -4,18 +4,25 @@ inline class Position(val value: Pair<Row, Col>) {
     constructor(row: Row, col: Col) : this(row to col)
 }
 
-inline class Row(override val value: Int):InlineInt
-inline class Col(override val value: Int):InlineInt
-
-interface InlineInt{
-    val value:Int
-    operator fun minus(amount: Int): Row? {
+inline class Row(val value: Int){
+    operator fun minus(amount: Int): Row {
         val newValue = value - amount
-        return if (newValue<0) null else Row(newValue)
+        return Row(newValue)
     }
 
-    operator fun plus(amount: Int): Row? {
+    operator fun plus(amount: Int): Row {
         val newValue = value + amount
-        return if (newValue<0) null else Row(newValue)
+        return Row(newValue)
+    }
+}
+inline class Col( val value: Int){
+    operator fun minus(amount: Int): Col {
+        val newValue = value - amount
+        return Col(newValue)
+    }
+
+    operator fun plus(amount: Int): Col {
+        val newValue = value + amount
+        return Col(newValue)
     }
 }
