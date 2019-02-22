@@ -69,7 +69,12 @@ data class Grid(
             .toMap()
     )
 
-    fun command(direction: Direction) = trim(direction).merge(direction).trim(direction).newItem()
+    fun command(direction: Direction): Grid {
+        val result = trim(direction)
+            .merge(direction)
+            .trim(direction)
+        return if (this == result) this else result.newItem()
+    }
     fun emptyPositions(): List<Position> =
         rows.flatMap { row ->
             cols.map { col -> Position(row, col) }

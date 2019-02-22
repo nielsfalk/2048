@@ -166,5 +166,21 @@ class GridTest {
                 "2,3,5,7\n" +
                 "2, ,6,7"
     }
+
+    @Test
+    fun `command - no newItem when nothing changed`() {
+        ("" +
+                "1, , , \n" +
+                "1, , , \n" +
+                "2, , , \n" +
+                "2, , , "
+                ).asGrid()
+            .command(Left).toString() shouldEqual
+                "1, , , \n" +
+                "1, , , \n" +
+                "2, , , \n" +
+                "2, , , "
+    }
+
 }
 
