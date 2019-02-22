@@ -24,7 +24,7 @@ class GridTest {
     }
 
     @Test
-    internal fun `merge left`() {
+    fun `merge left`() {
         ("" +
                 "1,1,2,2\n" +
                 " ,3,3, \n" +
@@ -52,5 +52,21 @@ class GridTest {
                 "5,6,7, \n" +
                 "8,8, , "
     }
+
+    @Test
+    fun `command left`() {
+        ("" +
+                "1,1,2,2\n" +
+                " ,3,3, \n" +
+                " ,4,5,6\n" +
+                "7,7,7,7"
+                ).asGrid()
+            .command(Left).toString() shouldEqual
+                "2,3, , \n" +
+                "4, , , \n" +
+                "5,6,7, \n" +
+                "8,8, , "
+    }
+
 }
 

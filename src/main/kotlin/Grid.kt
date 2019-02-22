@@ -55,6 +55,8 @@ data class Grid(
             }
             .toMap()
     )
+
+    fun command(left: Direction) = trim(left).merge(left).trim(left)
 }
 
 fun String.asGrid(): Grid {
