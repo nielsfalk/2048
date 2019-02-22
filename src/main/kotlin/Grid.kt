@@ -15,14 +15,14 @@ data class Grid(
             }.joinToString(separator = ",")
         }.joinToString(separator = "\n")
 
-    fun merge(left: Direction) = copy(
+    fun merge(direction: Direction) = copy(
         fields.toMutableMap()
             .apply {
                 for (row in rows) {
                     for (col in cols) {
                         val currentPosition = Position(row, col)
                         val currentVal = get(currentPosition)
-                        val positionToMerge = Position(row, col + 1)
+                        val positionToMerge = currentPosition.neighbour(direction.opposite)
                         if (currentVal != null) {
                             remove(positionToMerge, currentVal)
                             put(currentPosition, currentVal + 1)
@@ -33,7 +33,7 @@ data class Grid(
             .toMap()
     )
 
-    fun trim(left: Direction) = copy(
+    fun trim(direction: Direction) = copy(
         fields.toMutableMap()
             .apply {
                 for (row in rows) {
