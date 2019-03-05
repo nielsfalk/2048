@@ -1,7 +1,9 @@
 package de.nielsfalk.g2048
 
 import java.awt.Canvas
+import java.awt.Color.*
 import java.awt.Dimension
+import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
@@ -57,14 +59,48 @@ class GuiGame(val width: Int, val height: Int) {
                 grid = grid.command(it)
                 commandToApply = null
             }
-            draw()
+            draw(grid)
             Thread.sleep(1)
         }
     }
 
-    private fun draw() {
+    private fun draw(grid: Grid) {
         draw {
+            color = green
+            fillRect(0, 0, width, height)
+            val cellHeight = height / grid.rowCount
+            val cellWidths = width / grid.colCount
+            grid.emptyPositions().forEach {
+                val yOffset = cellHeight * it.row.value
+                val xOffset = cellWidths * it.col.value
+                color = darkGray
+                fillRect(xOffset + 1, yOffset + 1, cellWidths - 2, cellHeight - 2)
 
+            }
+            for ((position, value) in grid.fields) {
+                val yOffset = cellHeight * position.row.value
+                val xOffset = cellWidths * position.col.value
+
+                color = when (value) {
+                    1 -> red
+                    2 -> blue
+                    3 -> green
+                    4 -> green
+                    5 -> cyan
+                    6 -> cyan
+                    8 -> magenta
+                    9 -> orange
+                    else -> black
+                }
+                fillRect(xOffset + 1, yOffset + 1, cellWidths - 2, cellHeight - 2)
+                color = white
+                font = Font("Arial", Font.PLAIN, 60)
+                drawString(
+                    "${Math.pow(2.0, value.toDouble()).toInt()}",
+                    (xOffset + 10).toFloat(),
+                    (yOffset + cellHeight / 2).toFloat()
+                )
+            }
         }
     }
 
