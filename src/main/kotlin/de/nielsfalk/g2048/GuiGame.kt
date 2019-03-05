@@ -51,7 +51,12 @@ class GuiGame(val width: Int, val height: Int) {
     }
 
     fun gameLoop() {
+        var grid = Grid()
         while (gameRunning) {
+            commandToApply?.let {
+                grid = grid.command(it)
+                commandToApply = null
+            }
             draw()
             Thread.sleep(1)
         }
