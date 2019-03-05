@@ -15,7 +15,7 @@ data class Grid(
     val rows = (0 until rowCount).map(::Row)
     val cols = (0 until colCount).map(::Col)
 
-    private fun onAllPositions(from: Direction = Left, function: (Position) -> Unit) {
+    fun onAllPositions(from: Direction = Left, function: (Position) -> Unit) {
         (if (from == Down) rows.reversed() else rows)
             .forEach { row ->
                 (if (from == Right) cols.reversed() else cols)
@@ -98,11 +98,18 @@ data class Grid(
         )
     }
 
-    fun gameOver(): Boolean =
-        emptyPositions().isEmpty() &&
-                Direction.values()
-                    .map { command(it) }
-                    .none { it != this }
+    fun gameOver(): Boolean = allFilled() && nothingToMerge()
+
+    private fun nothingToMerge(): Boolean {
+        return sequenceOf(Up, Left)
+            .map { merge(it) }
+            .none { it != this }
+    }
+
+    private fun allFilled(): Boolean {
+        val emptyPositions = emptyPositions()
+        return emptyPositions.isEmpty()
+    }
 }
 
 fun String.asGrid(): Grid {
