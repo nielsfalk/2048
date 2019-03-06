@@ -1,10 +1,7 @@
 package de.nielsfalk.g2048
 
-import java.awt.Canvas
+import java.awt.*
 import java.awt.Color.*
-import java.awt.Dimension
-import java.awt.Font
-import java.awt.Graphics2D
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.WindowAdapter
@@ -75,28 +72,16 @@ class GuiGame(val width: Int, val height: Int) {
                 val xOffset = cellWidths * it.col.value
                 color = darkGray
                 fillRect(xOffset + 1, yOffset + 1, cellWidths - 2, cellHeight - 2)
-
             }
-            for ((position, value) in grid.fields) {
+            for ((position, tile) in grid.fields.mapValues { tile(it.value) }) {
                 val yOffset = cellHeight * position.row.value
                 val xOffset = cellWidths * position.col.value
-
-                color = when (value) {
-                    1 -> red
-                    2 -> blue
-                    3 -> green
-                    4 -> green
-                    5 -> cyan
-                    6 -> cyan
-                    8 -> magenta
-                    9 -> orange
-                    else -> black
-                }
+                color = tile.background
                 fillRect(xOffset + 1, yOffset + 1, cellWidths - 2, cellHeight - 2)
-                color = white
+                color = tile.textColor
                 font = Font("Arial", Font.PLAIN, 60)
                 drawString(
-                    "${Math.pow(2.0, value.toDouble()).toInt()}",
+                    tile.text,
                     (xOffset + 10).toFloat(),
                     (yOffset + cellHeight / 2).toFloat()
                 )
@@ -117,3 +102,23 @@ fun main() {
     GuiGame(600, 600).gameLoop()
 }
 
+private fun tile(value: Int): Tile {
+    val text = "${Math.pow(2.0, value.toDouble()).toInt()}"
+    return when (value) {
+        1 -> Tile(text, white, Color(0x405EA7))
+        2 -> Tile(text, black, Color(0x2994CC))
+        3 -> Tile(text, black, Color(0x65B051))
+        4 -> Tile(text, black, Color(0xCFDE4F))
+        5 -> Tile(text, black, Color(0xF2ED55))
+        6 -> Tile(text, black, Color(0xF7BE3D))
+        7 -> Tile(text, black, Color(0xF69D39))
+        8 -> Tile(text, black, Color(0xEE5631))
+        9 -> Tile(text, black, Color(0xEA332D))
+        10 -> Tile(text, white, Color(0xA31F47))
+        11 -> Tile(text, white, Color(0x7B3693))
+        12 -> Tile(text, white, Color(0x45308D))
+        else -> Tile(text, white, black)
+    }
+}
+
+data class Tile(val text: String, val textColor: Color, val background: Color)
