@@ -4,6 +4,7 @@ import java.awt.*
 import java.awt.Color.*
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
+import java.awt.event.KeyEvent.*
 import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.awt.image.BufferStrategy
@@ -13,7 +14,7 @@ import javax.swing.JFrame
 class GuiGame(val width: Int, val height: Int) {
     var gameRunning = true
     val strategy: BufferStrategy
-    var commandToApply: Direction? = null
+    var grid = Grid()
 
     init {
         val canvas = Canvas().apply {
@@ -21,11 +22,14 @@ class GuiGame(val width: Int, val height: Int) {
             setIgnoreRepaint(true)
             addKeyListener(object : KeyAdapter() {
                 override fun keyPressed(event: KeyEvent) {
-                    when (val code = event.keyCode) {
-                        in KeyEvent.VK_LEFT..KeyEvent.VK_DOWN -> commandToApply =
-                            Direction.values()[code - KeyEvent.VK_LEFT]
+                    grid = when (val keyCode = event.keyCode) {
+                        in VK_LEFT..VK_DOWN -> grid.command(keyCodeToDirection(keyCode))
+                        VK_SPACE -> Grid()
+                        else -> grid
                     }
                 }
+
+                private fun keyCodeToDirection(keyCode: Int) = Direction.values()[keyCode - VK_LEFT]
             })
         }
         JFrame("2048").apply {
@@ -50,12 +54,7 @@ class GuiGame(val width: Int, val height: Int) {
     }
 
     fun gameLoop() {
-        var grid = Grid()
         while (gameRunning) {
-            commandToApply?.let {
-                grid = grid.command(it)
-                commandToApply = null
-            }
             draw(grid)
             Thread.sleep(1)
         }
