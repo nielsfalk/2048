@@ -3,14 +3,14 @@ package de.nielsfalk.g2048
 import de.nielsfalk.g2048.Direction.*
 import kotlin.random.Random
 
-typealias Fields = Map<Position, Int>
+typealias Cells = Map<Position, Int>
 
 data class Grid(
-    val fields: Fields,
+    val cells: Cells,
     val rowCount: Int = 4,
     val colCount: Int = 4
 ) {
-    constructor() : this(Grid(emptyMap()).newItem().newItem().fields)
+    constructor() : this(Grid(emptyMap()).newItem().newItem().cells)
 
     val rows = (0 until rowCount).map(::Row)
     val cols = (0 until colCount).map(::Col)
@@ -28,12 +28,12 @@ data class Grid(
     override fun toString(): String =
         rows.joinToString(separator = "\n") { row ->
             cols.joinToString(separator = ",") { col ->
-                fields[Position(row, col)]?.toString() ?: " "
+                cells[Position(row, col)]?.toString() ?: " "
             }
         }
 
     fun merge(direction: Direction) = copy(
-        fields.toMutableMap()
+        cells.toMutableMap()
             .apply {
                 onAllPositions(from = direction) { currentPosition ->
                     val currentVal = get(currentPosition)
@@ -49,7 +49,7 @@ data class Grid(
     )
 
     fun trim(direction: Direction) = copy(
-        fields.toMutableMap()
+        cells.toMutableMap()
             .apply {
                 onAllPositions(from = direction) { currentPosition ->
                     if (get(currentPosition) == null) {
@@ -79,12 +79,12 @@ data class Grid(
     fun emptyPositions(): List<Position> =
         rows.flatMap { row ->
             cols.map { col -> Position(row, col) }
-                .filter { fields[it] == null }
+                .filter { cells[it] == null }
         }
 
     fun newItem(): Grid {
         return copy(
-            fields.toMutableMap().apply {
+            cells.toMutableMap().apply {
                 val emptyPositions = emptyPositions()
                 if (!emptyPositions.isEmpty()) {
 

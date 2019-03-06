@@ -72,7 +72,7 @@ class GuiGame(val width: Int, val height: Int) {
                 color = darkGray
                 fillRect(xOffset + 1, yOffset + 1, cellWidths - 2, cellHeight - 2)
             }
-            for ((position, tile) in grid.fields.mapValues { tile(it.value) }) {
+            for ((position, tile) in grid.cells.mapValues { tile(it.value) }) {
                 val yOffset = cellHeight * position.row.value
                 val xOffset = cellWidths * position.col.value
                 color = tile.background
